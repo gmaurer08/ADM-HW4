@@ -1,5 +1,7 @@
 import numpy as np
 import random
+from collections import defaultdict
+import pandas as pd
 
 def linear_hash(x, a=238, b=943, p=27281):
     '''
@@ -263,3 +265,110 @@ def minhash_results(user_ids, user_movies_dict, k_hash_function_choices, linear_
         errors.append(abs(prob_same_el - jaccard_sim))
 
     return np.mean(errors)
+
+# -------------------------------------------------------------------------------------------------- #
+
+def linear_dot_prod_hash(x,a,b,p):
+    '''
+    Function that hashes an array of positive integers to the range [1, p] using linear dot product hashing
+    Inputs:
+    - x (int or ndarray): integer or array of integers to hash
+    - a (int): LCG scaling parameter
+    - b (int): LCG shift parameter
+    - p (int): prime
+    Output:
+    - int or ndarray: the hashed value(s) constrained to the range [1, p]
+    '''
+    a = np.array(a, dtype=np.int64)  # Ensure `a` is 64-bit
+    x = np.array(x, dtype=np.int64)  # Ensure `x` is 64-bit
+    b = np.int64(b)  # Ensure `b` is 64-bit
+    p = np.int64(p)  # Ensure `p` is 64-bit
+    return (np.dot(a,x) + b) % p
+
+# -------------------------------------------------------------------------------------------------- #
+
+def LSH(signature_matrix, user_ids, r=4, p=200003, seed=4294967295):
+    '''
+    Function that performs LSH on a signature matrix
+    Inputs:
+    - signature_matrix (ndarray): matrix of signature vectors
+    - user_ids (ndarray of integers): user IDs
+    - r (int): number of hash functions
+    - p (int): prime indicating the max possible number of buckets
+    - seed (int): seed for reproducibility in randomness
+    Outputs:
+    - buckets (defaultdict): dictionary that maps buckets to the users hashed to it
+    - candidates (defaultdict): dictionary that maps users to all the users that share buckets with them
+    '''
+    rng = np.random.RandomState(seed) # create random number generator
+
+    num_buckets = signature_matrix.shape[0] // r # number of buckets
+
+    # Generate random parameters for the hash function linear_dot_prod_hash
+    a = rng.randint(1, int(0.2*p), r)
+    b = rng.randint(0, int(0.2*p))
+
+    buckets = defaultdict(list) # Initialize defaultdict that maps buckets to the users hashed to it
+    candidates = defaultdict(set) # Initialize defaultdict that maps users to all the users that share buckets with them
+    user_buckets = defaultdict(list) # Initialize defaultdict that maps users to their buckets
+
+    # Hash each signature vector to a bucket
+    for i in range(signature_matrix.shape[1]):
+        for j in range(num_buckets):
+            band_range = list(range(j*r, (j+1)*r)) # row indeces range of the band
+            hashed_value = linear_dot_prod_hash(signature_matrix[band_range,i],a,b,p) # hash signature vector band to a bucket
+            buckets[hashed_value].append(user_ids[i]) # append user ID to the bucket
+            user_buckets[user_ids[i]].append(hashed_value) # append bucket to the user
+
+    # Find all pairs of users that share buckets
+    # Iterate over the users
+    for user in user_buckets:
+        # Iterate over the user's buckets
+        for bucket in user_buckets[user]:
+            # Add the users from that bucket to the user's candidates
+            candidates[user].update(buckets[bucket])
+
+    # Remove self-candidates
+    for user in candidates:
+        candidates[user].remove(user)
+
+    return buckets, candidates
+
+# -------------------------------------------------------------------------------------------------- #
+
+def LSH_performance(signature_matrix, user_ids, similar_pairs, r=4, p=200003, seed=4294967295):
+    '''
+    Function that performs LSH on a signature matrix and returns the average size of the candidate sets and
+    the percentage of similar users that are candidates
+    Inputs:
+    - signature_matrix (ndarray): matrix of signature
+    - user_ids (ndarray of integers): user IDs
+    - similar_pairs (list of tuples): pairs of similar users with their jaccard similarities
+    - r (int): number of hash functions
+    - p (int): prime indicating the max possible number of buckets
+    - seed (int): seed for reproducibility in randomness
+    Outputs:
+    - avg_candidate_set_size (float): average size of the candidate sets
+    - percentage_similar_candidates (float): percentage of similar users that are candidates
+    '''
+    buckets, candidates = LSH(signature_matrix, user_ids, r, p, seed)
+    print("Computed LSH, now evaluating performance")
+    # Create dataframe to store the users and candidates with potential similarity to them
+    candidates_df = pd.DataFrame(candidates.items(), columns = ['User', 'Candidates'])
+    candidates_df['NumCandidates'] = candidates_df['Candidates'].apply(len)
+
+    # Average size of the candidate sets
+    avg_candidate_set_size = np.mean(candidates_df['NumCandidates'])
+
+    similar_candidates = [] # Initialize list of similar user pairs that are mutual candidates
+
+    # Iterate over user pairs with jaccard similarity of at least 0.5
+    for i in range(len(similar_pairs)):
+        # If user1 is a candidate of user2 and user2 is a candidate of user1
+        if similar_pairs[i][0] in candidates[similar_pairs[i][1]] and similar_pairs[i][1] in candidates[similar_pairs[i][0]]:
+            similar_candidates.append(similar_pairs[i]) # add the pair to the list
+
+    # Percentage of similar pairs that are also mutual candidates
+    percentage_similar_candidates = len(similar_candidates)/len(similar_pairs)
+
+    return avg_candidate_set_size, percentage_similar_candidates
