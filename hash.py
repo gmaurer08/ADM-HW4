@@ -33,7 +33,7 @@ def bitwise_hash(x, a=238, b=4435, p=27281):
     '''
     x = np.asarray(x)  # ensure input is a NumPy array
     return (np.bitwise_xor(x,a) + b) % p
-    
+
 # -------------------------------------------------------------------------------------------------------------------- #
 
 def random_minhash(user_ids, user_movies_dict, k = 10, p=27281, seed=198324):
@@ -62,8 +62,8 @@ def random_minhash(user_ids, user_movies_dict, k = 10, p=27281, seed=198324):
 
     # Initialize list to store information about the hash functions that will be randomly chosen
     # To compare results and find the best combinations, we can use this
-    hash_functions = [] 
-    
+    hash_functions = []
+
     # Create signature vectors
     for i in range(k):
 
@@ -110,7 +110,7 @@ def minhash(user_ids, user_movies_dict, k_hash_function_choices, linear_paramete
     - signature: matrix of signature vectors
     '''
     signature = np.zeros((k, user_ids.shape[0]), dtype=int)  # Initialize matrix of signature vectors
-    
+
     # Create signature vectors
     for i in range(k):
 
@@ -153,7 +153,7 @@ def jaccard_similarity(A, B):
 
 def random_minhash_results(user_ids, user_movies_dict, k = 10, p=27281, seed=198324):
     '''
-    Function that computes the signature matrix of user IDs and compares the signature vectors with 
+    Function that computes the signature matrix of user IDs and compares the signature vectors with
     the similarity between the original watched movie sets associated with the user IDs
     Inputs:
     - user_ids (ndarray of integers): categories we want to create the signature vectors for
@@ -168,7 +168,7 @@ def random_minhash_results(user_ids, user_movies_dict, k = 10, p=27281, seed=198
     - hash_functions (list): list of tuples (i,a,b) where 'i' identifies the chosen hash function, and 'a', 'b' are its parameters
     '''
     signature_matrix, hash_functions = random_minhash(user_ids, user_movies_dict, k, seed=seed)
-    N = 1000 # number of users to compare
+    N = len(user_ids) # number of users to compare
     # List of all user columns
     all_user_columns = list(range(signature_matrix.shape[1]))
     # Sampled user columns
@@ -211,7 +211,7 @@ def random_minhash_results(user_ids, user_movies_dict, k = 10, p=27281, seed=198
 
 def minhash_results(user_ids, user_movies_dict, k_hash_function_choices, linear_parameters=None, bitwise_parameters=None, k = 10, p=27281):
     '''
-    Function that computes the signature matrix of user IDs and compares the signature vectors with 
+    Function that computes the signature matrix of user IDs and compares the signature vectors with
     the similarity between the original watched movie sets associated with the user IDs
     Inputs:
     - user_ids (ndarray of integers): categories we want to create the signature vectors for
@@ -226,8 +226,8 @@ def minhash_results(user_ids, user_movies_dict, k_hash_function_choices, linear_
     - hash_functions (list): list of tuples (i,a,b) where 'i' identifies the chosen hash function, and 'a', 'b' are its parameters
     '''
     signature_matrix = minhash(user_ids, user_movies_dict, k_hash_function_choices, linear_parameters, bitwise_parameters, k = 10)
-    
-    N = 1000 # number of users to compare
+
+    N = len(user_ids) # number of users to compare
     # List of all user columns
     all_user_columns = list(range(signature_matrix.shape[1]))
     # Sampled user columns
@@ -302,19 +302,18 @@ def LSH(signature_matrix, user_ids, r=4, p=200003, seed=4294967295):
     '''
     rng = np.random.RandomState(seed) # create random number generator
 
-    num_buckets = signature_matrix.shape[0] // r # number of buckets
-
-    # Generate random parameters for the hash function linear_dot_prod_hash
-    a = rng.randint(1, int(0.2*p), r)
-    b = rng.randint(0, int(0.2*p))
+    num_bands = signature_matrix.shape[0] // r # number of bands
 
     buckets = defaultdict(list) # Initialize defaultdict that maps buckets to the users hashed to it
     candidates = defaultdict(set) # Initialize defaultdict that maps users to all the users that share buckets with them
     user_buckets = defaultdict(list) # Initialize defaultdict that maps users to their buckets
 
-    # Hash each signature vector to a bucket
-    for i in range(signature_matrix.shape[1]):
-        for j in range(num_buckets):
+    # Hash each signature vector band to a bucket
+    for j in range(num_bands):
+        # Generate random parameters for the hash function linear_dot_prod_hash
+        a = rng.randint(1, int(0.2*p), r)
+        b = rng.randint(0, int(0.2*p))
+        for i in range(signature_matrix.shape[1]):
             band_range = list(range(j*r, (j+1)*r)) # row indeces range of the band
             hashed_value = linear_dot_prod_hash(signature_matrix[band_range,i],a,b,p) # hash signature vector band to a bucket
             buckets[hashed_value].append(user_ids[i]) # append user ID to the bucket
