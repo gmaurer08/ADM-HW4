@@ -7,3 +7,9 @@ This GitHub repository contains the implementation of the fourth homework for th
 * Domenico Azzarito, domazza6902@outlook.it
 * Alessandro Querqui, 2031384, querqui.2031384@studenti.uniroma1.it
 * Géraldine Valérie Maurer, 1996887, gmaurer08@gmail.com
+
+
+### Repository Files:
+* **main.ipynb** - Jupyter notebook where you can see solutions and results of Homework 4 in ADM
+* **k_means.py** - Python file that contains custom functions used to implement the K-means algorithm from scratch with the help of the MapReduce technique.
+* **k_means_plus_plus.py** - Python file that contains custom functions used to implement the K-means++ algorithm from scratch with the help of the MapReduce technique.
