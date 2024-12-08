@@ -2,6 +2,9 @@
 
 This GitHub repository contains the implementation of the fourth homework for the course **Algorithmic Methods of Data Mining** for the Data Science master's degree at Sapienza (2024-2025). The details about the homework are specified here: https://github.com/Sapienza-University-Rome/ADM/tree/master/2024/Homework_4
 
+### Link to Notebook Viewer
+https://nbviewer.org/github/gmaurer08/ADM-HW4/blob/main/main.ipynb
+
 ### Group #15 Team Members
 * Sandro Khizanishvili, 2175979, khizanishvilisandro@gmail.com
 * Domenico Azzarito, 2209000, domazza6902@outlook.it
