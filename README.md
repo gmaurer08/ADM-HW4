@@ -55,16 +55,20 @@ This GitHub repository contains the implementation of the fourth homework for th
     - **Results**: the experiments gave us a best performance when using both hash functions: the values ```k=150``` and ```seed=4294967295``` lead to a lowest average error of 0.0158, so about 98.5% accuracy. In the images below are all the results.
 
 **Table with results from all configurations we tried**
+
 ![MinHashExp1](images/MinHashExp1.png)
 ![MinHashExp2](images/MinHashExp2.png)
 
 **Plot of Average Error Based on the Hash Functions used**
+
 ![MinHashExp3](images/MinHashExp3.png)
 
 **Table with Parameters and Functions of the Best Configuration we found**
+
 ![MinHashExp4](images/MinHashExp4.png)
 
 **Resulting Signature Matrix (first 20 rows)**
+
 ![SignMatrix](images/SignMatrix.png)
 
 * **LSH Experiment: Setup and Results**
@@ -74,14 +78,18 @@ This GitHub repository contains the implementation of the fourth homework for th
     - **Results**: we manage to get good results for both performance measures by taking band size ```r=5```, number of buckets ```p=2000033```, ```seed=999```, which gives us an average candidate set size of about 169, and a percentage of similar mutual candidate pairs of around 45%, which approximately aligns with what theory guarantees us about the threshold jaccard similarity two users must have to have a 50% chance of becoming candidate (approximately because we are working with signature vectors that can contain small errors compared to the real jaccard similarity).
 
 **Tablew with results from all configurations we tried**
+
 ![LSHExp1](images/LSHExp1.png)
 ![LSHExp3](images/LSHExp3.png)
 
 **Scatter Plots with Relationships between ```r``` (band size), ```p``` (bucket number), and the Performance Measures**
+
 ![LSHExp2](images/LSHExp2.png)
 
 **Picture of the User Interface of the Recommendation Engine**
+
 The text input is used to input a user ID. When you click on search, the engine is triggered to return movie recommendations to the user.
+
 ![Widget](images/Widget.png)
 
 ## 2. Grouping Movies Together!
