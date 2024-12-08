@@ -26,15 +26,15 @@ The MovieLens 20M dataset used in this notebook is sourced from kaggle, at https
 * ```tag.csv```: store information about timestamp creation, the user that created them an the movie they were created for
  
 ### Libraries Used:
-    * *zipfile*
-    * *pandas*
-    * *numpy*
-    * *matplotlib.pyplot*
-    * *re*
-    * *nltk*
-    * *collections*
-    * *random*
-    * *tqdm*
-    * *sklearn*
-    * *ipywidgets*
-    * *IPython.display*
+* *zipfile*
+* *pandas*
+* *numpy*
+* *matplotlib.pyplot*
+* *re*
+* *nltk*
+* *collections*
+* *random*
+* *tqdm*
+* *sklearn*
+* *ipywidgets*
+* *IPython.display*
