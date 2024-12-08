@@ -18,12 +18,12 @@ This GitHub repository contains the implementation of the fourth homework for th
 
 ### Dataset:
 The MovieLens 20M dataset used in this notebook is sourced from kaggle, at https://www.kaggle.com/datasets/grouplens/movielens-20m-dataset. It is composed of the following files:
-    * ```genome_scores.csv```: assigns relevance scores to movie tags
-    * ```genome_tags.csv```: assigns unique identifiers to tags
-    * ```link.csv```: contains movie identifiers on the imdb and tmdb platforms
-    * ```movie.csv```: contains movie title and genre information
-    * ```rating.csv```: contains movie ratings information and related timestamps
-    * ```tag.csv```: store information about timestamp creation, the user that created them an the movie they were created for
+* ```genome_scores.csv```: assigns relevance scores to movie tags
+* ```genome_tags.csv```: assigns unique identifiers to tags
+* ```link.csv```: contains movie identifiers on the imdb and tmdb platforms
+* ```movie.csv```: contains movie title and genre information
+* ```rating.csv```: contains movie ratings information and related timestamps
+* ```tag.csv```: store information about timestamp creation, the user that created them an the movie they were created for
  
 ### Libraries Used:
     * *zipfile*
