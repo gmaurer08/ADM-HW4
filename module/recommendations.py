@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from hash import *
+from module.hash import *
 from collections import defaultdict
 
 def find_two_most_similar_users(query_user, candidates, user_ids, user_movies_dict):
