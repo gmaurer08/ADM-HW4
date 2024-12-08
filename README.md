@@ -81,6 +81,7 @@ This GitHub repository contains the implementation of the fourth homework for th
 ![LSHExp2](images/LSHExp2.png)
 
 **Picture of the User Interface of the Recommendation Engine**
+The text input is used to input a user ID. When you click on search, the engine is triggered to return movie recommendations to the user.
 ![Widget](images/Widget.png)
 
 ## 2. Grouping Movies Together!
