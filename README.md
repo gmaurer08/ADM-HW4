@@ -11,10 +11,10 @@ This GitHub repository contains the implementation of the fourth homework for th
 
 ### Repository Files:
 * [main.ipynb](main.ipynb) - Jupyter notebook where you can see solutions and results of Homework 4 in ADM
-* [hash.py](modules/hash.py) - Python file containing functions that implement the Minhash and LSH algorithms, along with the hash functions used
-* [recommendations.py](modules/recommendations.py) - Python file containing functions that provide movie recommendations for users
-* [k_means.py](modules/k_means.py) - Python file that contains custom functions used to implement the K-means algorithm from scratch with the help of the MapReduce technique.
-* [k_means_plus_plus.py](modules/k_means_plus_plus.py) - Python file that contains custom functions used to implement the K-means++ algorithm from scratch with the help of the MapReduce technique.
+* [hash.py](module/hash.py) - Python file containing functions that implement the Minhash and LSH algorithms, along with the hash functions used
+* [recommendations.py](module/recommendations.py) - Python file containing functions that provide movie recommendations for users
+* [k_means.py](module/k_means.py) - Python file that contains custom functions used to implement the K-means algorithm from scratch with the help of the MapReduce technique.
+* [k_means_plus_plus.py](module/k_means_plus_plus.py) - Python file that contains custom functions used to implement the K-means++ algorithm from scratch with the help of the MapReduce technique.
 
 # Project Structure
 
